@@ -98,5 +98,5 @@ export const getMeController = async (req, res) => {
   }
   return res
     .status(200)
-    .json(new ApiResponse(200, "User info retrieved successfully", user));
+    .json(new ApiResponse(200, "User info retrieved successfully", user.username));
 };
