@@ -60,6 +60,72 @@ It demonstrates core backend and frontend development skills including authentic
 * Global Auth State using Context API
 
 ---
+---
+
+# 🚀 How to Run the Project
+
+## 🐳 Step 1: Start Database (MongoDB using Docker)
+
+Make sure Docker is installed, then run:
+
+```bash
+docker-compose up -d
+```
+
+👉 This will start the MongoDB container in the background.
+
+---
+
+## ⚙️ Step 2: Run Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+👉 Backend will start on:
+
+```
+http://localhost:5000
+```
+
+---
+
+## 💻 Step 3: Run Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+👉 Frontend will start on:
+
+```
+http://localhost:5173
+```
+
+---
+
+```bash
+# Start DB
+docker-compose up -d
+
+# Run backend
+cd backend
+npm install
+npm run dev
+
+# Run frontend
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+
 
 ## 📡 API Endpoints
 
@@ -253,23 +319,7 @@ src/
 * Centralized error handling
 * CORS configuration with credentials
 
----
 
-## 🚀 How to Run
-
-### Backend
-
-```bash
-npm install
-npm run dev
-```
-
-### Frontend
-
-```bash
-npm install
-npm run dev
-```
 
 ---
 
