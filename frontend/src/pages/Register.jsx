@@ -13,7 +13,15 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await Api.post("/auth/register", form);
-      setUser(res.data.data);
+            if (res?.data && res?.data?.data) {
+        await Api.get("/auth/me")
+          .then((res) => {
+            setUser(res?.data?.data);
+          })
+          .catch(() => {
+            setUser(null);
+          });
+      }
       toast.success("Registration successful");
       navigate("/dashboard");
     } catch (error) {
