@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import './app.css'
+import "./app.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/"
+            path="/login"
             element={
               <PublicRoute>
                 <Login />
@@ -30,13 +30,15 @@ function App() {
           />
 
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
             }
           />
+
+          <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -23,32 +23,65 @@ const Register = () => {
   };
   return (
     <div>
-      <h2>Register</h2>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          placeholder="Username"
-          onChange={(e) => setForm({ ...form, username: e.target.value })}
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-
-        <button type="submit">Register</button>
-      </form>
-
-      <p>
-        Already have account? <Link to="/">Login</Link>
-      </p>
+       <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-sm">
+ 
+        {/* Header */}
+        <h2 className="text-2xl font-semibold text-gray-800 mb-1">Register</h2>
+        <p className="text-sm text-gray-400 mb-6">Create a new account</p>
+ 
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Username"
+            value={form.username}
+            onChange={(e) => setForm({ ...form, username: e.target.value })}
+            required
+            autoComplete="username"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+ 
+          <input
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+            autoComplete="email"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+ 
+          <input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+            autoComplete="new-password"
+            minLength={6}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+ 
+ 
+          <button
+            type="submit"
+            className="w-full py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            Register
+          </button>
+        </form>
+ 
+        {/* Login link */}
+        <p className="text-center text-sm text-gray-400 mt-6">
+          Already have account?{" "}
+          <Link to="/login" className="text-blue-600 font-medium hover:underline">
+            Login
+          </Link>
+        </p>
+ 
+      </div>
+    </div>
     </div>
   );
 };

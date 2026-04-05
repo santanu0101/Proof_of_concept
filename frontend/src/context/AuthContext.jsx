@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); 
+  // console.log("AuthProvider - user:", user, "loading:", loading);
 
   useEffect(() => {
     Api.get("/auth/me")
@@ -14,6 +15,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch(() => {
         setUser(null);
+        // setLoading(false);
       })
       .finally(() => {
         setLoading(false);

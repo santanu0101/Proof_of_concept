@@ -10,7 +10,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     await Api.post("/auth/logout");
     setUser(null);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
