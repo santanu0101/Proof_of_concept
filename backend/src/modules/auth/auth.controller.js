@@ -1,6 +1,11 @@
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
-import { loginUserService, registerUserService } from "./auth.service.js";
+import { decodedToken } from "../../utils/jwt.js";
+import {
+  loginUserService,
+  refreshTokenService,
+  registerUserService,
+} from "./auth.service.js";
 import { loginValidation, registerValidation } from "./auth.validation.js";
 
 //register
@@ -50,13 +55,48 @@ export const loginUserController = async (req, res) => {
 };
 
 //refresh token
-export const refreshTokenController = async (req, res) => {};
+export const refreshTokenController = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    throw new ApiError(401, "No refresh token provided");
+  }
+  const decoded = decodedToken(refreshToken, "refresh");
+
+  const { accessToken, newRefreshToken } = await refreshTokenService(
+    decoded.id,
+    refreshToken,
+  );
+  return res
+    .cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    })
+    .cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+    })
+    .status(200)
+    .json(new ApiResponse(200, "Token refreshed successfully"));
+};
 
 //logout
 export const logoutUserController = async (_, res) => {
-  res
+  return res
     .clearCookie("accessToken")
     .clearCookie("refreshToken")
     .status(200)
     .json(new ApiResponse(200, "Logged out successfully"));
+};
+
+//get-me
+export const getMeController = async (req, res) => {
+  const user = req.user;
+  if(!user){
+    throw new ApiError(404, "User not found");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "User info retrieved successfully", user.username));
 };

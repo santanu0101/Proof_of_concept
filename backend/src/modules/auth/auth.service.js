@@ -1,18 +1,11 @@
 import { User } from "../../models/User.model.js";
 import ApiError from "../../utils/ApiError.js";
-import { generateTokensAndSave } from "../../utils/tokenHelper.js";
-
-
-const resUser = (user) => ({
-  id: user._id,
-  username: user.username,
-  email: user.email,
-});
+import { generateTokensAndSave } from "../../utils/jwt.js";
+import { resUser } from "../../utils/userRes.js";
 
 //register
 export const registerUserService = async (userData) => {
   const { username, email, password } = userData;
-
   const existingUser = await User.findOne({
     email,
   });
@@ -55,3 +48,18 @@ export const loginUserService = async (data) => {
     refreshToken,
   };
 };
+
+//refresh token
+export const refreshTokenService = async (userId, oldRefreshToken) => {
+  const user = await User.findById(userId);
+  // console.log(`db: ${user.refreshToken}, cookie: ${oldRefreshToken}`);
+  if (!user || user.refreshToken !== oldRefreshToken) {
+    throw new ApiError(401, "Invalid refresh token");
+  }
+  const { accessToken, refreshToken } = await generateTokensAndSave(user);
+
+  return {
+    accessToken,
+    newRefreshToken: refreshToken,
+  };
+}

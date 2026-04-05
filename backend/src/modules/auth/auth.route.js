@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  getMeController,
   loginUserController,
   logoutUserController,
   refreshTokenController,
@@ -14,8 +15,7 @@ const router = Router();
 router.post("/register", authLimiter, asyncHandler(registerUserController));
 router.post("/login", authLimiter, asyncHandler(loginUserController));
 router.post(
-  "/refresh-token",
-  verifyJWT,
+  "/refresh",
   asyncHandler(refreshTokenController),
 );
 router.post(
@@ -23,5 +23,7 @@ router.post(
   verifyJWT,
   asyncHandler(logoutUserController),
 );
+
+router.get("/me", verifyJWT, asyncHandler(getMeController));
 
 export default router;
