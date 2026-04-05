@@ -33,28 +33,6 @@ const Login = () => {
   };
   return (
     <div>
-      {/* <h2>Login</h2>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-
-        <button type="submit">Login</button>
-      </form>
-
-      <p>
-        No account? <Link to="/register">Register</Link>
-      </p> */}
-
       <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-sm">
           {/* Header */}
