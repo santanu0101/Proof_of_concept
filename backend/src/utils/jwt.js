@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
 import ApiError from "./ApiError.js";
+import redis from "../config/redis.js";
 
 //token generation
 export const generateTokensAndSave = async (user) => {
-  if(!user){
+  const expiryInSeconds = 7 * 24 * 60 * 60;
+  if (!user) {
     throw new ApiError(400, "User data is required for token generation");
   }
   const accessToken = jwt.sign(
@@ -23,17 +25,26 @@ export const generateTokensAndSave = async (user) => {
     throw new ApiError(500, "Failed to generate tokens");
   }
 
-  user.refreshToken = refreshToken;
-  await user.save();
+  const redisKey = `refreshToken:${user._id}`;
+  await redis.set(
+    redisKey,
+    refreshToken,
+    "EX",
+    expiryInSeconds,
+  );
 
   return { accessToken, refreshToken };
 };
 
-
 //token decode
 export const decodedToken = (token, type) => {
   try {
-    const decoded = jwt.verify(token, type === "access" ? process.env.JWT_ACCESS_SECRET : process.env.JWT_REFRESH_SECRET);
+    const decoded = jwt.verify(
+      token,
+      type === "access"
+        ? process.env.JWT_ACCESS_SECRET
+        : process.env.JWT_REFRESH_SECRET,
+    );
     return decoded;
   } catch (error) {
     throw new ApiError(401, "Invalid token");

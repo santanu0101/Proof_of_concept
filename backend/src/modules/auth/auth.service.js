@@ -1,3 +1,4 @@
+import redis from "../../config/redis.js";
 import { User } from "../../models/User.model.js";
 import ApiError from "../../utils/ApiError.js";
 import { generateTokensAndSave } from "../../utils/jwt.js";
@@ -51,15 +52,27 @@ export const loginUserService = async (data) => {
 
 //refresh token
 export const refreshTokenService = async (userId, oldRefreshToken) => {
-  const user = await User.findById(userId);
-  // console.log(`db: ${user.refreshToken}, cookie: ${oldRefreshToken}`);
-  if (!user || user.refreshToken !== oldRefreshToken) {
+
+  const key = `refreshToken:${userId}`;
+  const storedRefreshToken = await redis.get(key);
+
+  if (!storedRefreshToken || storedRefreshToken !== oldRefreshToken) {
+    const keys = await redis.keys(`refreshToken:${userId}`);
+    if (keys.length > 0) {
+      await redis.del(keys);
+    }
     throw new ApiError(401, "Invalid refresh token");
   }
+  
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(400, "User not found");
+  }
+
   const { accessToken, refreshToken } = await generateTokensAndSave(user);
 
   return {
     accessToken,
     newRefreshToken: refreshToken,
   };
-}
+};
