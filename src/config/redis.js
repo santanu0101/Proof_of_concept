@@ -21,6 +21,10 @@ dotenv.config();
 // export default redis;
 import { createClient } from "redis";
 
+console.log("ENV CHECK:", {
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT
+})
 const redis = createClient({
   username: process.env.REDIS_USERNAME,
   password: process.env.REDIS_PASSWORD,
